@@ -31,10 +31,19 @@ public class EpsilonNKA {
 		znakoviIzaPocetneLR1Stavke.add("#");
 		LR1Stavka pocetnaLR1Stavka = new LR1Stavka(pocetniNezavrsniZnak, desnaStranaPocetneProdukcije, 0,
 				znakoviIzaPocetneLR1Stavke, 1);
+		LR1Stavke.add(pocetnaLR1Stavka);
+		int brojLR1Stavki = 1;
+		int i = 0;
+		do {
+			for (; i < brojLR1Stavki; i++) {
+				LR1Stavke.get(i).pomakniTocku();
+			}
+			brojLR1Stavki = LR1Stavke.size();
+		} while (i != brojLR1Stavki);
 	}
 
 	// nisam stavio da je static jer mora pristupati vise stvari iz epsilonNka
-	private class LR1Stavka {
+	class LR1Stavka {
 		private String znakLijeveStraneProdukcije;
 		private List<String> znakoviDesneStraneProdukcije;
 		private int indeksTocke;
@@ -116,6 +125,22 @@ public class EpsilonNKA {
 			}
 		}
 
+		public boolean isJeLiDodanaUStanjeDKA() {
+			return jeLiDodanaUStanjeDKA;
+		}
+
+		public void setJeLiDodanaUStanjeDKA(boolean jeLiDodanaUStanjeDKA) {
+			this.jeLiDodanaUStanjeDKA = jeLiDodanaUStanjeDKA;
+		}
+
+		public Par getPrijelaz() {
+			return prijelaz;
+		}
+
+		public List<LR1Stavka> getStavkeUKojePrelaziSEpsilon() {
+			return stavkeUKojePrelaziSEpsilon;
+		}
+
 		@Override
 		public boolean equals(Object o) {
 			if (o == null) {
@@ -145,6 +170,14 @@ public class EpsilonNKA {
 		public Par(String znakKojiPokrecePrijelaz, LR1Stavka sljedecaStavka) {
 			this.znakKojiPokrecePrijelaz = znakKojiPokrecePrijelaz;
 			this.sljedecaStavka = sljedecaStavka;
+		}
+
+		public String getZnakKojiPokrecePrijelaz() {
+			return znakKojiPokrecePrijelaz;
+		}
+
+		public LR1Stavka getSljedecaStavka() {
+			return sljedecaStavka;
 		}
 	}
 }
