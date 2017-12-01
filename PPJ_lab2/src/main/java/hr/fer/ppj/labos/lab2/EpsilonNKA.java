@@ -47,8 +47,9 @@ public class EpsilonNKA {
 			System.out.println("trenutno stanje: " + stavka);
 			System.out.println("prijelaz prema:");
 			if (stavka.prijelaz != null) {
-				System.out.println("prijelaz prema:" + stavka.prijelaz.sljedecaStavka);
+				System.out.println(stavka.prijelaz.sljedecaStavka);
 			}
+			System.out.println("epsilon prijelazi prema:");
 			for (LR1Stavka epsilonStavka : stavka.stavkeUKojePrelaziSEpsilon) {
 				System.out.println(epsilonStavka);
 			}
@@ -166,6 +167,10 @@ public class EpsilonNKA {
 			}
 			string.append(znakoviIzaProdukcije);
 			return string.toString();
+		}
+
+		public Set<String> getZnakoviIzaProdukcije() {
+			return znakoviIzaProdukcije;
 		}
 
 		public boolean isJeLiDodanaUStanjeDKA() {
