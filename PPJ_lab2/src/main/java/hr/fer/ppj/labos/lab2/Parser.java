@@ -67,7 +67,7 @@ public class Parser {
 //		for (String string : produkcije.keySet()) {
 //			System.out.print(string + " ::= ");
 //			for (Integer i : produkcije.get(string).keySet()) {
-//				System.out.print(produkcije.get(string).get(i) + "|");
+//				System.out.print(i + " " + produkcije.get(string).get(i) + "|");
 //			}
 //			System.out.println();
 //		}
@@ -237,8 +237,30 @@ public class Parser {
 //			System.out.println(zapocinjeSkupovi.get(znak));
 //		}
 	}
-	
-	public static void main(String[] args) {
-		Parser p = new Parser(args[0]);
+
+	public List<String> getNezavrsni() {
+		return nezavrsni;
 	}
+
+	public List<String> getZavrsni() {
+		return zavrsni;
+	}
+
+	public List<String> getSinkronizacijski() {
+		return sinkronizacijski;
+	}
+
+	public Map<String, Map<Integer, List<String>>> getProdukcije() {
+		return produkcije;
+	}
+
+	public Set<String> getPrazniNezavrsni() {
+		return prazniNezavrsni;
+	}
+
+	public Map<String, HashSet<String>> getZapocinjeSkupovi() {
+		return zapocinjeSkupovi;
+	}
+	
+	
 }
