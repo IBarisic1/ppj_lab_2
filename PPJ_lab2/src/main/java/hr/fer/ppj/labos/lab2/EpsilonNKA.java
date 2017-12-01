@@ -1,0 +1,150 @@
+package hr.fer.ppj.labos.lab2;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class EpsilonNKA {
+
+	private List<LR1Stavka> LR1Stavke;
+	private List<String> nezavrsni;
+	private Map<String, Set<String>> zapocinjeSkupovi;
+	private Map<String, Map<Integer, List<String>>> produkcije;
+	private Set<String> prazniZnakovi;
+
+	public EpsilonNKA(List<String> nezavrsni, Map<String, Set<String>> zapocinjeSkupovi,
+			Map<String, Map<Integer, List<String>>> produkcije, Set<String> prazniZnakovi) {
+		this.LR1Stavke = new ArrayList<>();
+		this.nezavrsni = nezavrsni;
+		this.zapocinjeSkupovi = zapocinjeSkupovi;
+		this.produkcije = produkcije;
+		this.prazniZnakovi = prazniZnakovi;
+	}
+
+	public void izgradiEpsilonNKA() {
+		String pocetniNezavrsniZnak = "<%>";
+		List<String> desnaStranaPocetneProdukcije = produkcije.get("<%>").get(1);
+		Set<String> znakoviIzaPocetneLR1Stavke = new HashSet<>(); // samo oznaka
+																	// krajaniza
+		znakoviIzaPocetneLR1Stavke.add("#");
+		LR1Stavka pocetnaLR1Stavka = new LR1Stavka(pocetniNezavrsniZnak, desnaStranaPocetneProdukcije, 0,
+				znakoviIzaPocetneLR1Stavke, 1);
+	}
+
+	// nisam stavio da je static jer mora pristupati vise stvari iz epsilonNka
+	private class LR1Stavka {
+		private String znakLijeveStraneProdukcije;
+		private List<String> znakoviDesneStraneProdukcije;
+		private int indeksTocke;
+		private Set<String> znakoviIzaProdukcije;
+		private Par prijelaz;
+		private List<LR1Stavka> stavkeUKojePrelaziSEpsilon;
+		private boolean jeLiDodanaUStanjeDKA;
+		private int indeksProdukcije;
+
+		public LR1Stavka(String znakLijeveStraneProdukcije, List<String> znakoviDesneStraneProdukcije, int indeksTocke,
+				Set<String> znakoviIzaProdukcije, int indeksProdukcije) {
+			this.znakLijeveStraneProdukcije = znakLijeveStraneProdukcije;
+			this.znakoviDesneStraneProdukcije = znakoviDesneStraneProdukcije;
+			this.indeksTocke = indeksTocke;
+			this.znakoviIzaProdukcije = znakoviIzaProdukcije;
+			this.jeLiDodanaUStanjeDKA = false;
+			this.indeksProdukcije = indeksProdukcije;
+		}
+
+		// ovaj konstruktor sluzi za stvaranje sljedece LR stavke na temelju
+		// prethodne
+		private LR1Stavka(LR1Stavka prethodnaStavka) {
+			this(prethodnaStavka.znakLijeveStraneProdukcije, prethodnaStavka.znakoviDesneStraneProdukcije,
+					prethodnaStavka.indeksTocke + 1, prethodnaStavka.znakoviIzaProdukcije,
+					prethodnaStavka.indeksProdukcije);
+		}
+
+		private void pomakniTocku() {
+			// provjera je li tocka na kraju desne strane produkcije
+			if (indeksTocke == znakoviDesneStraneProdukcije.size()) {
+				return;
+			}
+
+			// provjera je li znak desno od tocke nezavrsan zbog pokretanja
+			// epsilon prijelaza
+			if (nezavrsni.contains(znakoviDesneStraneProdukcije.get(indeksTocke))) {
+				obradaEpsilonPrijelaza(znakoviDesneStraneProdukcije.get(indeksTocke));
+			}
+
+			// stvaranje nove LR1 stavke pomicanjem tocke za jedno mjesto udesno
+			LR1Stavka sljedecaStavka = new LR1Stavka(this);
+			this.prijelaz = new Par(znakoviDesneStraneProdukcije.get(indeksTocke), sljedecaStavka);
+			LR1Stavke.add(sljedecaStavka);
+		}
+
+		// za svaku produkciju koja zapocinje danim nezavrsnim znakom stvori
+		// novu LR1stavku ako vec ne postoji
+		private void obradaEpsilonPrijelaza(String nezavrsniZnak) {
+			for (Map.Entry<Integer, List<String>> produkcija : produkcije.get(nezavrsniZnak).entrySet()) {
+				List<String> noviZnakoviDesneStraneProdukcije = produkcija.getValue();
+				Integer indeksProdukcije = produkcija.getKey();
+				Set<String> noviZnakoviIzaProdukcije = new HashSet<String>(zapocinjeSkupovi.get(nezavrsniZnak));
+
+				// provjera jesu li svi znakovi iza danog nezavrsnog u
+				// originalnoj LR1 stavci prazni znakovi, ako jesu treba dodati
+				// i znakove iza originalne LR1 stavke
+				boolean sviSuPrazni = true;
+				for (int i = indeksTocke + 1, n = znakoviDesneStraneProdukcije.size(); i < n; i++) {
+					if (!prazniZnakovi.contains(znakoviDesneStraneProdukcije.get(i))) {
+						sviSuPrazni = false;
+						break;
+					}
+				}
+				if (sviSuPrazni) {
+					noviZnakoviIzaProdukcije.addAll(znakoviIzaProdukcije);
+				}
+				LR1Stavka novaStavka = new LR1Stavka(nezavrsniZnak, noviZnakoviDesneStraneProdukcije, 0,
+						noviZnakoviIzaProdukcije, indeksProdukcije);
+				// istovremeno provjeravamo nalazi li se novaStavka vec u listi
+				// svih stavki te ako postoji saznajemo indeks na kojem se
+				// nalazi u listi
+				int indeksNoveStavkeUListiSvihStavki = LR1Stavke.indexOf(novaStavka);
+				if (indeksNoveStavkeUListiSvihStavki != -1) {
+					stavkeUKojePrelaziSEpsilon.add(LR1Stavke.get(indeksNoveStavkeUListiSvihStavki));
+				} else {
+					LR1Stavke.add(novaStavka);
+					stavkeUKojePrelaziSEpsilon.add(novaStavka);
+				}
+			}
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (o == null) {
+				return false;
+			}
+			if (!(o instanceof LR1Stavka)) {
+				return false;
+			}
+			LR1Stavka that = (LR1Stavka) o;
+			if (that.indeksProdukcije != this.indeksProdukcije) {
+				return false;
+			}
+			if (that.indeksTocke != this.indeksTocke) {
+				return false;
+			}
+			if (!that.znakoviIzaProdukcije.equals(this.znakoviIzaProdukcije)) {
+				return false;
+			}
+			return true;
+		}
+	}
+
+	private static class Par {
+		private String znakKojiPokrecePrijelaz;
+		private LR1Stavka sljedecaStavka;
+
+		public Par(String znakKojiPokrecePrijelaz, LR1Stavka sljedecaStavka) {
+			this.znakKojiPokrecePrijelaz = znakKojiPokrecePrijelaz;
+			this.sljedecaStavka = sljedecaStavka;
+		}
+	}
+}
