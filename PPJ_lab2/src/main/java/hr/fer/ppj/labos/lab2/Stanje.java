@@ -11,6 +11,11 @@ public class Stanje {
 	private List<LR1Stavka> sadrzaj;
 	private Map<String, Integer> prijelazi;
 	
+	public Stanje(int index, List<LR1Stavka> sadrzaj){
+		this.index = index;
+		this.sadrzaj = sadrzaj;
+	}
+	
 	public void nadjiPrijelaze(List<Stanje> listaStanja){
 		for (LR1Stavka stavka : sadrzaj) {
 			if(stavka.getPrijelaz() != null){ //ako je stavka potpuna, nema prijelaz, tj prijelaz je null
