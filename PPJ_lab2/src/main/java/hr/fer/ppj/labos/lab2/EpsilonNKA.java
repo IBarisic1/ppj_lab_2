@@ -24,7 +24,7 @@ public class EpsilonNKA {
 		izgradiEpsilonNKA();
 	}
 
-	public void izgradiEpsilonNKA() {
+	private void izgradiEpsilonNKA() {
 		String pocetniNezavrsniZnak = "<%>";
 		List<String> desnaStranaPocetneProdukcije = produkcije.get("<%>").get(1);
 		Set<String> znakoviIzaPocetneLR1Stavke = new HashSet<>(); // samo oznaka
@@ -56,6 +56,12 @@ public class EpsilonNKA {
 			System.out.println();
 		}
 	}
+
+	
+	public List<LR1Stavka> getLR1Stavke() {
+		return LR1Stavke;
+	}
+
 
 	// nisam stavio da je static jer mora pristupati vise stvari iz epsilonNka
 	class LR1Stavka {

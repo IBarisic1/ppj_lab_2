@@ -23,16 +23,17 @@ public class Akcija {
 		
 		for (Stanje stanje : stanjaDka) {
 			for (Map.Entry<String, Integer> prijelaz : stanje.getPrijelazi().entrySet()){
-				String zavrsniZnak = prijelaz.getKey();
+				String znak = prijelaz.getKey();
 				Integer novoStanje = prijelaz.getValue();
-				tablica[stanje.getIndex()][zavrsniIKraj.indexOf(zavrsniZnak)] = 
-						new Par(AkcijaParsera.POMAKNI, novoStanje);
+				if(zavrsniIKraj.contains(znak))
+					tablica[stanje.getIndex()][zavrsniIKraj.indexOf(znak)] = 
+					new Par(AkcijaParsera.POMAKNI, novoStanje);
 			}
 			
 			for (LR1Stavka stavka : stanje.getSadrzaj()) {
 				if(stavka.getPrijelaz() == null){//potpuna LR stavka
 					
-					if(stavka.getZnakLijeveStraneProdukcije().equals("$")){
+					if(stavka.getZnakLijeveStraneProdukcije().equals("<%>")){
 						tablica[stanje.getIndex()][zavrsniIKraj.indexOf("#")] = 
 								new Par(AkcijaParsera.PRIHVATI, 0);
 					}
@@ -64,9 +65,12 @@ public class Akcija {
 			}
 		}
 		
-		for (Par[] parovi : tablica) {
-			for (Par par : parovi) {
-				if(par == null) par = new Par(AkcijaParsera.ODBACI, 0);
+		for (int i = 0; i < tablica.length; i++) {
+			for (int j = 0; j < tablica[i].length; j++) {
+				if(tablica[i][j] == null){
+					System.out.println("tu");
+					tablica[i][j] = new Par(AkcijaParsera.ODBACI, 0);
+				}
 			}
 		}
 		
@@ -88,6 +92,14 @@ public class Akcija {
 		public int getIndex() {
 			return index;
 		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(akcija);
+			sb.append(index);
+			return sb.toString();
+		}
 	}
 
 	public Map<String, Map<Integer, List<String>>> getProdukcije() {
@@ -97,6 +109,4 @@ public class Akcija {
 	public Par[][] getTablica() {
 		return tablica;
 	}
-	
-	
 }

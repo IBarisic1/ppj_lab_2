@@ -12,10 +12,12 @@ public class DKA {
 	
 	public DKA(List<LR1Stavka> listaStavki){
 		this.listaStavki = listaStavki;
+		this.generirajStanja();
 	}
 	
-	public void generirajStanja(){
+	private void generirajStanja(){
 		int index = 0;
+		listaStanja = new ArrayList<>();
 		for (LR1Stavka stavka : listaStavki) {
 			if(!stavka.isJeLiDodanaUStanjeDKA()){
 				List<LR1Stavka> sadrzaj = new ArrayList<>();
@@ -34,6 +36,9 @@ public class DKA {
 				listaStanja.add(s);
 				index++;
 			}
+		}
+		for (Stanje stanje : listaStanja) {
+			stanje.nadjiPrijelaze(listaStanja);
 		}
 	}
 	
