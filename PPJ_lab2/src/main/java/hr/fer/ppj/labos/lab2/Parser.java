@@ -22,7 +22,7 @@ public class Parser {
 	private final List<String> sinkronizacijski;
 	private Map<String, Map<Integer, List<String>>> produkcije;
 	private Set<String> prazniNezavrsni;
-	private Map<String, HashSet<String>> zapocinjeSkupovi;
+	private Map<String, Set<String>> zapocinjeSkupovi;
 	
 	public Parser(String put){
 		List<String> sveLinije = null;
@@ -224,7 +224,7 @@ public class Parser {
 		//dodaj skupove u mapu sa skupovima
 		for(int i = 0; i < sviZnakovi.size(); i++){
 			String nezZnak = sviZnakovi.get(i);
-			HashSet<String> skupZapocinje = new HashSet<>();
+			Set<String> skupZapocinje = new HashSet<>();
 			for(int j = 0; j < zapocinjeZnakom.length; j++){
 				if(!nezavrsni.contains(sviZnakovi.get(j))){
 					if(zapocinjeZnakom[i][j]) skupZapocinje.add(sviZnakovi.get(j));
@@ -258,7 +258,7 @@ public class Parser {
 		return prazniNezavrsni;
 	}
 
-	public Map<String, HashSet<String>> getZapocinjeSkupovi() {
+	public Map<String, Set<String>> getZapocinjeSkupovi() {
 		return zapocinjeSkupovi;
 	}
 	
