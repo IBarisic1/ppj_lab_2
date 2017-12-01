@@ -21,13 +21,15 @@ public class EpsilonNKA {
 		this.zapocinjeSkupovi = zapocinjeSkupovi;
 		this.produkcije = produkcije;
 		this.prazniZnakovi = prazniZnakovi;
+		izgradiEpsilonNKA();
 	}
 
 	public void izgradiEpsilonNKA() {
 		String pocetniNezavrsniZnak = "<%>";
 		List<String> desnaStranaPocetneProdukcije = produkcije.get("<%>").get(1);
 		Set<String> znakoviIzaPocetneLR1Stavke = new HashSet<>(); // samo oznaka
-																	// krajaniza
+																	// kraja
+																	// niza
 		znakoviIzaPocetneLR1Stavke.add("#");
 		LR1Stavka pocetnaLR1Stavka = new LR1Stavka(pocetniNezavrsniZnak, desnaStranaPocetneProdukcije, 0,
 				znakoviIzaPocetneLR1Stavke, 1);
@@ -39,7 +41,7 @@ public class EpsilonNKA {
 				LR1Stavke.get(i).pomakniTocku();
 			}
 			brojLR1Stavki = LR1Stavke.size();
-		} while (i != brojLR1Stavki);
+		} while (i < brojLR1Stavki);
 
 		for (LR1Stavka stavka : LR1Stavke) {
 			System.out.println(stavka);
@@ -63,6 +65,7 @@ public class EpsilonNKA {
 			this.znakoviDesneStraneProdukcije = znakoviDesneStraneProdukcije;
 			this.indeksTocke = indeksTocke;
 			this.znakoviIzaProdukcije = znakoviIzaProdukcije;
+			this.stavkeUKojePrelaziSEpsilon = new ArrayList<>();
 			this.jeLiDodanaUStanjeDKA = false;
 			this.indeksProdukcije = indeksProdukcije;
 		}
@@ -78,6 +81,11 @@ public class EpsilonNKA {
 		private void pomakniTocku() {
 			// provjera je li tocka na kraju desne strane produkcije
 			if (indeksTocke == znakoviDesneStraneProdukcije.size()) {
+				return;
+			}
+			
+			//za epsilon produkcije
+			if (znakoviDesneStraneProdukcije.get(0).equals("$")) {
 				return;
 			}
 
@@ -99,7 +107,10 @@ public class EpsilonNKA {
 			for (Map.Entry<Integer, List<String>> produkcija : produkcije.get(nezavrsniZnak).entrySet()) {
 				List<String> noviZnakoviDesneStraneProdukcije = produkcija.getValue();
 				Integer indeksProdukcije = produkcija.getKey();
-				Set<String> noviZnakoviIzaProdukcije = new HashSet<String>(zapocinjeSkupovi.get(nezavrsniZnak));
+				Set<String> noviZnakoviIzaProdukcije = new HashSet<String>();
+				for (int i = indeksTocke + 1, n = znakoviDesneStraneProdukcije.size(); i < n; i++) {
+					noviZnakoviIzaProdukcije.addAll(zapocinjeSkupovi.get(znakoviDesneStraneProdukcije.get(i)));
+				}
 
 				// provjera jesu li svi znakovi iza danog nezavrsnog u
 				// originalnoj LR1 stavci prazni znakovi, ako jesu treba dodati
@@ -137,11 +148,15 @@ public class EpsilonNKA {
 			int i = 0;
 			for (String znak : znakoviDesneStraneProdukcije) {
 				if (i == indeksTocke) {
-					string.append('.');
+					string.append('*');
 				}
 				string.append(znak);
 				i++;
 			}
+			if (i == indeksTocke) {
+				string.append('*');
+			}
+			string.append(znakoviIzaProdukcije);
 			return string.toString();
 		}
 
