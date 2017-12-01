@@ -44,7 +44,15 @@ public class EpsilonNKA {
 		} while (i < brojLR1Stavki);
 
 		for (LR1Stavka stavka : LR1Stavke) {
-			System.out.println(stavka);
+			System.out.println("trenutno stanje: " + stavka);
+			System.out.println("prijelaz prema:");
+			if (stavka.prijelaz != null) {
+				System.out.println("prijelaz prema:" + stavka.prijelaz.sljedecaStavka);
+			}
+			for (LR1Stavka epsilonStavka : stavka.stavkeUKojePrelaziSEpsilon) {
+				System.out.println(epsilonStavka);
+			}
+			System.out.println();
 		}
 	}
 
@@ -83,8 +91,8 @@ public class EpsilonNKA {
 			if (indeksTocke == znakoviDesneStraneProdukcije.size()) {
 				return;
 			}
-			
-			//za epsilon produkcije
+
+			// za epsilon produkcije
 			if (znakoviDesneStraneProdukcije.get(0).equals("$")) {
 				return;
 			}
@@ -170,6 +178,14 @@ public class EpsilonNKA {
 
 		public Par getPrijelaz() {
 			return prijelaz;
+		}
+
+		public String getZnakLijeveStraneProdukcije() {
+			return znakLijeveStraneProdukcije;
+		}
+
+		public int getIndeksProdukcije() {
+			return indeksProdukcije;
 		}
 
 		public List<LR1Stavka> getStavkeUKojePrelaziSEpsilon() {
