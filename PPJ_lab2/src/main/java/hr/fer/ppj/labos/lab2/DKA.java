@@ -36,4 +36,8 @@ public class DKA {
 			}
 		}
 	}
+	
+	public List<Stanje> getStanja(){
+		return listaStanja;
+	}
 }

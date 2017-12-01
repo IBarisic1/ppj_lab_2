@@ -24,6 +24,7 @@ public class Stanje {
 				for (Stanje stanje : listaStanja) {
 					if(stanje.getSadrzaj().contains(prelaziU)){
 						prijelazi.put(znakZaPrijelaz, stanje.getIndex());
+						break;
 					}
 				}
 			}
