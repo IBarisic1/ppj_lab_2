@@ -37,8 +37,9 @@ public class GSA {
 			System.out.println();
 		}
 		
+		System.out.println(e.getLR1Stavke().size());
 		
-		//testiran DKA, testirana tablica akcija, napisati i testirati 
+		//DEBUG DKA!!!, testirana tablica akcija, napisati i testirati 
 		//tablicu novoStanje
 		
 	}

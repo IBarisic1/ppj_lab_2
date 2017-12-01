@@ -68,7 +68,6 @@ public class Akcija {
 		for (int i = 0; i < tablica.length; i++) {
 			for (int j = 0; j < tablica[i].length; j++) {
 				if(tablica[i][j] == null){
-					System.out.println("tu");
 					tablica[i][j] = new Par(AkcijaParsera.ODBACI, 0);
 				}
 			}
