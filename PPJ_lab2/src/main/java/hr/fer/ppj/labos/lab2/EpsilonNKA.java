@@ -123,6 +123,7 @@ public class EpsilonNKA {
 					stavkeUKojePrelaziSEpsilon.add(novaStavka);
 				}
 			}
+
 		}
 
 		public boolean isJeLiDodanaUStanjeDKA() {
@@ -163,7 +164,7 @@ public class EpsilonNKA {
 		}
 	}
 
-	private static class Par {
+	static class Par {
 		private String znakKojiPokrecePrijelaz;
 		private LR1Stavka sljedecaStavka;
 
