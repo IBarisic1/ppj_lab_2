@@ -40,6 +40,10 @@ public class EpsilonNKA {
 			}
 			brojLR1Stavki = LR1Stavke.size();
 		} while (i != brojLR1Stavki);
+
+		for (LR1Stavka stavka : LR1Stavke) {
+			System.out.println(stavka);
+		}
 	}
 
 	// nisam stavio da je static jer mora pristupati vise stvari iz epsilonNka
@@ -124,6 +128,21 @@ public class EpsilonNKA {
 				}
 			}
 
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder string = new StringBuilder(znakLijeveStraneProdukcije);
+			string.append(" -> ");
+			int i = 0;
+			for (String znak : znakoviDesneStraneProdukcije) {
+				if (i == indeksTocke) {
+					string.append('.');
+				}
+				string.append(znak);
+				i++;
+			}
+			return string.toString();
 		}
 
 		public boolean isJeLiDodanaUStanjeDKA() {
