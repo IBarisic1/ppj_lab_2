@@ -13,10 +13,13 @@ public class Akcija implements Serializable {
 	private Map<String, Map<Integer, List<String>>> produkcije;
 	private Par[][] tablica;
 	private List<String> zavrsniIKraj;
+	private List<String> sinkronizacijski;
 
-	public Akcija(DKA dka, List<String> zavrsni, Map<String, Map<Integer, List<String>>> produkcije) {
+	public Akcija(DKA dka, List<String> zavrsni, List<String> sinkronizacijski,
+			Map<String, Map<Integer, List<String>>> produkcije) {
 
 		this.produkcije = produkcije;
+		this.sinkronizacijski = sinkronizacijski;
 		List<Stanje> stanjaDka = dka.getStanja();
 		zavrsniIKraj = new ArrayList<>(zavrsni);
 		zavrsniIKraj.add("#");
@@ -108,5 +111,13 @@ public class Akcija implements Serializable {
 
 	public Par[][] getTablica() {
 		return tablica;
+	}
+
+	public List<String> getSinkronizacijski() {
+		return sinkronizacijski;
+	}
+	
+	public List<String> getZavrsniIKraj(){
+		return zavrsniIKraj;
 	}
 }

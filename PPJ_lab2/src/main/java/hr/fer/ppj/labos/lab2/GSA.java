@@ -3,15 +3,11 @@ package hr.fer.ppj.labos.lab2;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Map;
-
-import hr.fer.ppj.labos.lab2.Akcija.Par;
-import hr.fer.ppj.labos.lab2.EpsilonNKA.LR1Stavka;
 
 public class GSA {
 
-	public static final String NOVO_STANJE_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/analizator/NovoStanje.ser";
-	public static final String AKCIJA_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/analizator/Akcija.ser";
+	public static final String NOVO_STANJE_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/NovoStanje.ser";
+	public static final String AKCIJA_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/Akcija.ser";
 
 	public static void main(String[] args) {
 		Parser p = new Parser(args[0]);
@@ -33,7 +29,7 @@ public class GSA {
 //		}
 //		System.out.println();
 
-		Akcija a = new Akcija(d, p.getZavrsni(), p.getProdukcije());
+		Akcija a = new Akcija(d, p.getZavrsni(), p.getSinkronizacijski(), p.getProdukcije());
 
 //		System.out.println("AKCIJA:");
 //		for (Par[] parovi : a.getTablica()) {
