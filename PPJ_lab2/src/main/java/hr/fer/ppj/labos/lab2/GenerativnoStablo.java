@@ -65,6 +65,24 @@ public class GenerativnoStablo {
 		this.korijen = stog.pop();
 	}
 	
+	//ispis se koristi koristenjem korijena iz ovog razreda, pomak 
+	//mora biti 0
+	public void ispisiStablo(Cvor korijen, int pomak){
+		if(korijen == null) System.out.println("prvo generiraj stablo");
+		else{
+			if(!(korijen.getUniformniZnak() == "<%>")){
+				for(int i = 0; i < pomak; i++){
+					System.out.print(" ");
+				}
+				System.out.println(korijen);
+				pomak++;
+			}
+			for (Cvor dijete : korijen.getDjeca()) {
+				this.ispisiStablo(dijete, pomak);
+			}
+		}
+	}
+	
 	static class Cvor{
 		
 		private int stanje;
@@ -82,14 +100,13 @@ public class GenerativnoStablo {
 			this.brojRetka = brojRetka;
 			this.leksickaJedinka = leksickaJedinka;
 			this.ispisatiSamoUniformniZnak = ispisatiSamoUniformniZnak;
-		}
+			this.djeca = new LinkedList<>();		}
 		
 		public Cvor(int stanje, String uniformniZnak, boolean jeNezavrsniZnak){
 			this(stanje, uniformniZnak, -1, null, jeNezavrsniZnak);
 		}
 		
 		public void dodajDijete(Cvor dijete){
-			if(djeca == null) djeca = new LinkedList<>();
 			djeca.add(dijete);
 		}
 
