@@ -1,7 +1,10 @@
 package hr.fer.ppj.labos.lab2;
 
-public abstract class AkcijaParsera {
+import java.io.Serializable;
+
+public abstract class AkcijaParsera implements Serializable {
 	
+	private static final long serialVersionUID = 26263876880823540L;
 	public static final char POMAKNI = 'P',
 			REDUCIRAJ = 'R',
 			PRIHVATI = 'A',
