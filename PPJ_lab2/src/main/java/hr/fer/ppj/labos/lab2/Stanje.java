@@ -1,8 +1,8 @@
 package hr.fer.ppj.labos.lab2;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import hr.fer.ppj.labos.lab2.EpsilonNKA.LR1Stavka;
 
@@ -15,7 +15,7 @@ public class Stanje {
 	public Stanje(int index, List<LR1Stavka> sadrzaj){
 		this.index = index;
 		this.sadrzaj = sadrzaj;
-		prijelazi = new TreeMap<>();
+		prijelazi = new HashMap<>();
 	}
 	
 	public int getIndex(){
