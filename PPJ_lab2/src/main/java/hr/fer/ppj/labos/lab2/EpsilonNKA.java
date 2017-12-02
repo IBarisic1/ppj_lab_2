@@ -123,8 +123,13 @@ public class EpsilonNKA {
 				List<String> noviZnakoviDesneStraneProdukcije = produkcija.getValue();
 				Integer indeksProdukcije = produkcija.getKey();
 				Set<String> noviZnakoviIzaProdukcije = new HashSet<String>();
+
+				//dodavanje znakova kojima moze zapoceti ostatak niza iza nezavrsnog znaka koji je pokrenuo prijelaz
 				for (int i = indeksTocke + 1, n = znakoviDesneStraneProdukcije.size(); i < n; i++) {
 					noviZnakoviIzaProdukcije.addAll(zapocinjeSkupovi.get(znakoviDesneStraneProdukcije.get(i)));
+					if (!prazniZnakovi.contains(znakoviDesneStraneProdukcije.get(i))) {
+						break;
+					}
 				}
 
 				// provjera jesu li svi znakovi iza danog nezavrsnog u
