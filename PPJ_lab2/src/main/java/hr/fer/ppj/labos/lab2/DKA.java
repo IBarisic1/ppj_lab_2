@@ -1,9 +1,12 @@
 package hr.fer.ppj.labos.lab2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hr.fer.ppj.labos.lab2.EpsilonNKA.LR1Stavka;
+import hr.fer.ppj.labos.lab2.EpsilonNKA.Par;
 
 public class DKA {
 	
@@ -16,29 +19,63 @@ public class DKA {
 	}
 	
 	private void generirajStanja(){
-		int index = 0;
 		listaStanja = new ArrayList<>();
-		for (LR1Stavka stavka : listaStavki) {
-			if(!stavka.isJeLiDodanaUStanjeDKA()){
-				List<LR1Stavka> sadrzaj = new ArrayList<>();
-				sadrzaj.add(stavka);
-				for(int i = 0; i < sadrzaj.size(); i++){
-					List<LR1Stavka> listaEpsilon = sadrzaj.get(i).
-							getStavkeUKojePrelaziSEpsilon();
-					for (LR1Stavka lr1Stavka : listaEpsilon) {
-						if(!sadrzaj.contains(lr1Stavka)){
-							sadrzaj.add(lr1Stavka);
-							lr1Stavka.setJeLiDodanaUStanjeDKA(true);
-						}
-					}
-				}
-				Stanje s = new Stanje(index, sadrzaj);
-				listaStanja.add(s);
-				index++;
+		
+		List<LR1Stavka> sadrzajPrvog = new ArrayList<>();
+		sadrzajPrvog.add(listaStavki.get(0));
+		
+		for(int i = 0; i < sadrzajPrvog.size(); i++){
+			for(LR1Stavka epsilonPrijelaz : 
+				sadrzajPrvog.get(i).getStavkeUKojePrelaziSEpsilon()){
+				if(!sadrzajPrvog.contains(epsilonPrijelaz))
+					sadrzajPrvog.add(epsilonPrijelaz);
 			}
 		}
-		for (Stanje stanje : listaStanja) {
-			stanje.nadjiPrijelaze(listaStanja);
+		
+		listaStanja.add(new Stanje( listaStanja.size(), sadrzajPrvog));
+		
+		for(int i = 0; i < listaStanja.size(); i++){
+			Map<String, List<LR1Stavka>> mapaPrijelaza = new HashMap<>();
+			for (LR1Stavka lr1Stavka : listaStanja.get(i).getSadrzaj()) {
+				Par prijelaz = lr1Stavka.getPrijelaz();
+				if(prijelaz != null){
+					if(mapaPrijelaza.get(prijelaz.getZnakKojiPokrecePrijelaz()) == null)
+						mapaPrijelaza.put(prijelaz.getZnakKojiPokrecePrijelaz(), 
+								new ArrayList<>());
+					mapaPrijelaza.get(prijelaz.getZnakKojiPokrecePrijelaz()).
+					add(prijelaz.getSljedecaStavka());
+				}
+			}
+			for(Map.Entry<String, List<LR1Stavka>> prijelazZaZnak : 
+				mapaPrijelaza.entrySet()){
+				List<LR1Stavka> stavke = prijelazZaZnak.getValue();
+				for(int j = 0; j < stavke.size(); j++){
+					for(LR1Stavka epsilonPrijelaz : 
+						stavke.get(j).getStavkeUKojePrelaziSEpsilon()){
+						if(!stavke.contains(epsilonPrijelaz))
+							stavke.add(epsilonPrijelaz);
+					}
+				}
+			}
+			for(Map.Entry<String, List<LR1Stavka>> prijelazZaZnak : 
+				mapaPrijelaza.entrySet()){
+				List<LR1Stavka> stavke = prijelazZaZnak.getValue();
+				String znakZaPrijelaz = prijelazZaZnak.getKey();
+				boolean jeUListiStanja = false;
+				for (Stanje stanje1 : listaStanja) {
+					if(stanje1.sadrziSveStavke(stavke)){
+						listaStanja.get(i).dodajPrijelaz(znakZaPrijelaz, 
+								stanje1.getIndex());
+						jeUListiStanja = true;
+						break;
+					}
+				}
+				if(!jeUListiStanja){
+					Stanje novoStanje = new Stanje(listaStanja.size(), stavke);
+					listaStanja.get(i).dodajPrijelaz(znakZaPrijelaz, novoStanje.getIndex());
+					listaStanja.add(novoStanje);
+				}
+			}
 		}
 	}
 	
