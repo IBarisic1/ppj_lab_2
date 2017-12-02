@@ -1,5 +1,6 @@
 package hr.fer.ppj.labos.lab2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.Map;
 import hr.fer.ppj.labos.lab2.EpsilonNKA.LR1Stavka;
 import hr.fer.ppj.labos.lab2.EpsilonNKA.Par;
 
-public class DKA {
+public class DKA implements Serializable {
 	
+	private static final long serialVersionUID = 2268260805958615895L;
 	private List<LR1Stavka> listaStavki;
 	private List<Stanje> listaStanja;
 	

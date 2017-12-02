@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,8 +16,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class Parser {
+public class Parser implements Serializable {
 	
+	private static final long serialVersionUID = 9065750387758906132L;
 	private final List<String> nezavrsni;
 	private final List<String> zavrsni;
 	private final List<String> sinkronizacijski;

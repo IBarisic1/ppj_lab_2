@@ -1,9 +1,12 @@
 package hr.fer.ppj.labos.lab2;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class NovoStanje {
+public class NovoStanje implements Serializable {
+	
+	private static final long serialVersionUID = -4210169076773587890L;
 	private Map<String, Map<Integer, List<String>>> produkcije;
 	private int[][] tablica;
 	private List<String> nezavrsniZnakovi;

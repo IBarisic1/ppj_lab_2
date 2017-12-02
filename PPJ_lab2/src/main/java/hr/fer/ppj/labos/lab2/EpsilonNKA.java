@@ -1,13 +1,15 @@
 package hr.fer.ppj.labos.lab2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class EpsilonNKA {
+public class EpsilonNKA implements Serializable {
 
+	private static final long serialVersionUID = 987208477361655362L;
 	private List<LR1Stavka> LR1Stavke;
 	private List<String> nezavrsni;
 	private Map<String, Set<String>> zapocinjeSkupovi;
