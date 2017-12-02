@@ -10,8 +10,8 @@ import hr.fer.ppj.labos.lab2.EpsilonNKA.LR1Stavka;
 
 public class GSA {
 
-	public static final String NOVO_STANJE_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/NovoStanje.ser";
-	public static final String AKCIJA_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/Akcija.ser";
+	public static final String NOVO_STANJE_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/analizator/NovoStanje.ser";
+	public static final String AKCIJA_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/analizator/Akcija.ser";
 
 	public static void main(String[] args) {
 		Parser p = new Parser(args[0]);
@@ -45,7 +45,7 @@ public class GSA {
 
 		System.out.println(d.getStanja().size());
 
-		NovoStanje n = new NovoStanje(d, p.getNezavrsni(), p.getProdukcije());
+		NovoStanje n = new NovoStanje(d, p.getNezavrsni());
 
 		try (ObjectOutputStream outNovoStanje = new ObjectOutputStream(new FileOutputStream(NOVO_STANJE_PATH));
 				ObjectOutputStream outAkcija = new ObjectOutputStream(new FileOutputStream(AKCIJA_PATH))) {

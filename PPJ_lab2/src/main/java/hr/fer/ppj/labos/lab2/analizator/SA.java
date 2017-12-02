@@ -1,7 +1,11 @@
-package hr.fer.ppj.labos.lab2;
+package hr.fer.ppj.labos.lab2.analizator;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+
+import hr.fer.ppj.labos.lab2.Akcija;
+import hr.fer.ppj.labos.lab2.GSA;
+import hr.fer.ppj.labos.lab2.NovoStanje;
 
 public class SA {
 	public static void main(String[] args) {
