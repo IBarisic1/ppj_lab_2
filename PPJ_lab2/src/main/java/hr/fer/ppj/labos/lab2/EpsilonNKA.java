@@ -45,18 +45,18 @@ public class EpsilonNKA implements Serializable {
 			brojLR1Stavki = LR1Stavke.size();
 		} while (i < brojLR1Stavki);
 
-		for (LR1Stavka stavka : LR1Stavke) {
-			System.out.println("trenutno stanje: " + stavka);
-			System.out.println("prijelaz prema:");
-			if (stavka.prijelaz != null) {
-				System.out.println(stavka.prijelaz.sljedecaStavka);
-			}
-			System.out.println("epsilon prijelazi prema:");
-			for (LR1Stavka epsilonStavka : stavka.stavkeUKojePrelaziSEpsilon) {
-				System.out.println(epsilonStavka);
-			}
-			System.out.println();
-		}
+//		for (LR1Stavka stavka : LR1Stavke) {
+//			System.out.println("trenutno stanje: " + stavka);
+//			System.out.println("prijelaz prema:");
+//			if (stavka.prijelaz != null) {
+//				System.out.println(stavka.prijelaz.sljedecaStavka);
+//			}
+//			System.out.println("epsilon prijelazi prema:");
+//			for (LR1Stavka epsilonStavka : stavka.stavkeUKojePrelaziSEpsilon) {
+//				System.out.println(epsilonStavka);
+//			}
+//			System.out.println();
+//		}
 	}
 
 	
