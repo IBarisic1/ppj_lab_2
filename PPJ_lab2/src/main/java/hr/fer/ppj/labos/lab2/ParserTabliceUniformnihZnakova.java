@@ -20,7 +20,12 @@ public class ParserTabliceUniformnihZnakova {
 
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(put)))) {
 			// definicija liste u koju skupljam linije
-			Supplier<List<String>> definicija = () -> new ArrayList<String>();
+			Supplier<List<String>> definicija = new Supplier<List<String>>() {
+				@Override
+				public List<String> get() {
+					return new ArrayList<String>();
+				}
+			};
 			// skupljanje u jednu listu
 			sveLinije = br.lines().collect(Collectors.toCollection(definicija));
 		} catch (IOException ie) {
