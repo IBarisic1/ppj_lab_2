@@ -10,7 +10,7 @@ public class GSA {
 	public static final String AKCIJA_PATH = "./src/main/java/hr/fer/ppj/labos/lab2/Akcija.ser";
 
 	public static void main(String[] args) {
-		Parser p = new Parser(args[0]);
+		Parser p = new Parser("C:\\Users\\Ivan\\Desktop\\PPJ primmjeri\\simplePpjLang.san");
 		EpsilonNKA e = new EpsilonNKA(p.getNezavrsni(), p.getZapocinjeSkupovi(), p.getProdukcije(),
 				p.getPrazniNezavrsni());
 		DKA d = new DKA(e.getLR1Stavke());

@@ -83,7 +83,7 @@ public class GenerativnoStablo {
 	}
 
 	public void prihvati() {
-//		this.reduciraj(1);
+		// this.reduciraj(1);
 		this.korijen = stog.pop();
 	}
 
@@ -131,30 +131,37 @@ public class GenerativnoStablo {
 						+ " " + uniformniZnak.getLeksickaJedinka());
 
 				// oporavak od pogreske
+				// odbacivanje znakova ulaznog niza do prvog sinkornizacijskog
 				while (!sinkronizacijski.contains(uniformniZnak.getUniformniZnak())) {
 					++i;
-					uniformniZnak = uniformniZnakoviUlaznogNiza.get(i);
 					if (i >= n) {
 						// mislim da do ovoga ne bi trebalo moci doci
 						break;
 					}
+					uniformniZnak = uniformniZnakoviUlaznogNiza.get(i);
 				}
+
+				// odbacivanje cvorova sa stoga
 				Cvor cvorVrhaStoga;
 				int indeksSinkronizacijskogZnaka = zavrsniIKraj.indexOf(uniformniZnak.getUniformniZnak());
-				do {
-					stog.pop(); // za cvor na vrhu stoga nema definirane akcije
-								// pa ga skidamo
+				while (tablicaAkcija[stanjeNaVrhuStoga][indeksSinkronizacijskogZnaka]
+						.getAkcija() == AkcijaParsera.ODBACI) {
+					stog.pop();
 					stanjeNaVrhuStoga = stog.peek().getStanje();
-				} while (tablicaAkcija[stanjeNaVrhuStoga][indeksSinkronizacijskogZnaka]
-						.getAkcija() == AkcijaParsera.ODBACI);
+				}
+
+				// kazaljka ulaznog niza pokazuje na sinkronizacijski znak, a
+				// petlja ce ju pomaknuti na sljedeci znak pa ju zato vracamo za
+				// jedan unatrag
+				--i;
 			}
 		}
 	}
-	
-	//poziva se s korijenom stabla i pomakom od 0
-	public void ispisiStablo(Cvor korijen, int pomak){
-		if(!korijen.getUniformniZnak().equals("<%>")){
-			for(int i = 0; i < pomak; i++){
+
+	// poziva se s korijenom stabla i pomakom od 0
+	public void ispisiStablo(Cvor korijen, int pomak) {
+		if (!korijen.getUniformniZnak().equals("<%>")) {
+			for (int i = 0; i < pomak; i++) {
 				System.out.print(" ");
 			}
 			System.out.println(korijen);
@@ -163,10 +170,11 @@ public class GenerativnoStablo {
 			this.ispisiStablo(dijete, pomak + 1);
 		}
 	}
-	
-	public Cvor getKorijen(){
+
+	public Cvor getKorijen() {
 		return korijen;
 	}
+
 	static class Cvor {
 
 		private int stanje;

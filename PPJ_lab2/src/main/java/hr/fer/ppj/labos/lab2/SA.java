@@ -15,7 +15,7 @@ public class SA {
 			i.printStackTrace();
 		}
 
-		ParserTabliceUniformnihZnakova parser = new ParserTabliceUniformnihZnakova(args[0]); // TODO
+		ParserTabliceUniformnihZnakova parser = new ParserTabliceUniformnihZnakova("C:\\Users\\Ivan\\Desktop\\PPJ primmjeri\\simplePpjLang_err.in"); // TODO
 																								// u
 																								// eclipseu																						// podesi
 																								// ulazni
