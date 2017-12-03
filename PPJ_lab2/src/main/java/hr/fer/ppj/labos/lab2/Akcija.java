@@ -79,7 +79,8 @@ public class Akcija implements Serializable {
 
 	}
 
-	class Par {
+	static class Par implements Serializable{
+		private static final long serialVersionUID = 2101247416172174761L;
 		private char akcija;
 		private int index;
 
