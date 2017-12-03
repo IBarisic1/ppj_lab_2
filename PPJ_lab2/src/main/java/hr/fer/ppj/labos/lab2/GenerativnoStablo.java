@@ -12,7 +12,7 @@ import hr.fer.ppj.labos.lab2.ParserTabliceUniformnihZnakova.ZapisTabliceUniformn
 public class GenerativnoStablo {
 	private Stack<Cvor> stog;
 	private final List<String> nezavrsni;
-	private final List<String> zavrsni;
+	private final List<String> zavrsniIKraj;
 	private final List<String> sinkronizacijski;
 	private final Par[][] tablicaAkcija;
 	private final Integer[][] tablicaNovoStanje;
@@ -23,7 +23,7 @@ public class GenerativnoStablo {
 	public GenerativnoStablo(Akcija tablicaAkcija, NovoStanje tablicaNovoStanje,
 			List<ZapisTabliceUniformnihZnakova> uniformniZnakoviUlaznogNiza) {
 		this.nezavrsni = tablicaNovoStanje.getNezavrsniZnakovi();
-		this.zavrsni = tablicaAkcija.getZavrsniIKraj();
+		this.zavrsniIKraj = tablicaAkcija.getZavrsniIKraj();
 		this.sinkronizacijski = tablicaAkcija.getSinkronizacijski();
 		this.stog = new Stack<>();
 		this.tablicaAkcija = tablicaAkcija.getTablica();
@@ -62,7 +62,8 @@ public class GenerativnoStablo {
 			noviCvor.dodajDijete(new Cvor(-1, "$", true));
 			stog.push(noviCvor);
 		} else {
-			//djecu novog cvora treba dodavati u obrnutom redoslijedu od onog kako su poredani na vrhu stoga gledajuci od gore prema dolje
+			// djecu novog cvora treba dodavati u obrnutom redoslijedu od onog
+			// kako su poredani na vrhu stoga gledajuci od gore prema dolje
 			List<Cvor> skinutiZnakoviDesneStraneProdukcije = new ArrayList<>();
 			for (int i = 0; i < desnaStranaProdukcije.size(); i++) {
 				skinutiZnakoviDesneStraneProdukcije.add(stog.pop());
@@ -100,19 +101,52 @@ public class GenerativnoStablo {
 				stanjeNaVrhuStoga = vrhStoga.stanje;
 			}
 			uniformniZnak = uniformniZnakoviUlaznogNiza.get(i);
-			indeksUniformnogZnakaUTabliciAkcija = zavrsni.indexOf(uniformniZnak.getUniformniZnak());
+			indeksUniformnogZnakaUTabliciAkcija = zavrsniIKraj.indexOf(uniformniZnak.getUniformniZnak());
 			akcija = tablicaAkcija[stanjeNaVrhuStoga][indeksUniformnogZnakaUTabliciAkcija];
 			if (akcija.getAkcija() == AkcijaParsera.POMAKNI) {
 				pomakni(uniformniZnak.getUniformniZnak(), akcija.getIndex(), uniformniZnak.getRedak(),
 						uniformniZnak.getLeksickaJedinka());
 			} else if (akcija.getAkcija() == AkcijaParsera.REDUCIRAJ) {
 				reduciraj(akcija.getIndex());
-				//kazaljka treba ostati na istom mjestu u ulaznom nizu pa se smanjuje za 1 jer cu ju petlja povecati za 1
+				// kazaljka treba ostati na istom mjestu u ulaznom nizu pa se
+				// smanjuje za 1 jer cu ju petlja povecati za 1
 				i--;
 			} else if (akcija.getAkcija() == AkcijaParsera.PRIHVATI) {
 				prihvati();
 			} else {
 				// akcija == ODBACI
+
+				// ispis na syserr jer se na sprutu ne evaluira ispis pogreske,
+				// ali na usmenom to mogu pitati
+				System.err.println("broj retka pogreske: " + uniformniZnak.getRedak());
+				// -1 jer ne zelim provjeravati za oznaku kraja niza koja je na
+				// kraju liste
+				System.err.println("uniformni znakovi koji ne bi izazvali pogresku: ");
+				for (int j = 0, m = zavrsniIKraj.size() - 1; j < m; j++) {
+					if (tablicaAkcija[stanjeNaVrhuStoga][j].getAkcija() != AkcijaParsera.ODBACI) {
+						System.err.println(" " + zavrsniIKraj.get(j));
+					}
+				}
+				System.err.println("procitani uniformni znak i leksicka jedinka: " + uniformniZnak.getUniformniZnak()
+						+ " " + uniformniZnak.getLeksickaJedinka());
+
+				// oporavak od pogreske
+				while (!sinkronizacijski.contains(uniformniZnak.getUniformniZnak())) {
+					++i;
+					uniformniZnak = uniformniZnakoviUlaznogNiza.get(i);
+					if (i >= n) {
+						// mislim da do ovoga ne bi trebalo moci doci
+						break;
+					}
+				}
+				Cvor cvorVrhaStoga;
+				int indeksSinkronizacijskogZnaka = zavrsniIKraj.indexOf(uniformniZnak.getUniformniZnak());
+				do {
+					stog.pop(); // za cvor na vrhu stoga nema definirane akcije
+								// pa ga skidamo
+					stanjeNaVrhuStoga = stog.peek().getStanje();
+				} while (tablicaAkcija[stanjeNaVrhuStoga][indeksSinkronizacijskogZnaka]
+						.getAkcija() == AkcijaParsera.ODBACI);
 			}
 		}
 	}
