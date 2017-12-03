@@ -3,10 +3,6 @@ package hr.fer.ppj.labos.lab2;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import hr.fer.ppj.labos.lab2.Akcija;
-import hr.fer.ppj.labos.lab2.GSA;
-import hr.fer.ppj.labos.lab2.NovoStanje;
-
 public class SA {
 	public static void main(String[] args) {
 		Akcija tablicaAkcija = null;
@@ -21,8 +17,7 @@ public class SA {
 
 		ParserTabliceUniformnihZnakova parser = new ParserTabliceUniformnihZnakova(args[0]); // TODO
 																								// u
-																								// eclipseu
-																								// podesi
+																								// eclipseu																						// podesi
 																								// ulazni
 																								// argument-put
 																								// do
@@ -32,6 +27,7 @@ public class SA {
 																								// znakovima
 		GenerativnoStablo stablo = new GenerativnoStablo(tablicaAkcija, tablicaNovoStanje,
 				parser.getUniformniZnakoviUlaznogNiza());
-
+		
+		stablo.ispisiStablo(stablo.getKorijen(), 0);
 	}
 }

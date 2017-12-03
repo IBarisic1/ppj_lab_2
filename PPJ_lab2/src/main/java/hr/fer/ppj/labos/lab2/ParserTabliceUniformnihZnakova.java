@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -20,7 +19,12 @@ public class ParserTabliceUniformnihZnakova {
 
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(put)))) {
 			// definicija liste u koju skupljam linije
-			Supplier<List<String>> definicija = () -> new ArrayList<String>();
+			Supplier<List<String>> definicija = new Supplier<List<String>>() {
+				@Override
+				public List<String> get() {
+					return new ArrayList<String>();
+				}
+			};
 			// skupljanje u jednu listu
 			sveLinije = br.lines().collect(Collectors.toCollection(definicija));
 		} catch (IOException ie) {
@@ -30,7 +34,8 @@ public class ParserTabliceUniformnihZnakova {
 		for (String zapis : sveLinije) {
 			splittaniZapis = zapis.split(" ");
 			uniformniZnakoviUlaznogNiza.add(new ZapisTabliceUniformnihZnakova(splittaniZapis[0],
-					Integer.parseInt(splittaniZapis[1]), splittaniZapis[2]));
+					Integer.parseInt(splittaniZapis[1]), zapis.substring(splittaniZapis[0].length() +
+							splittaniZapis[1].length() + 2)));
 		}
 		
 		//dodaj oznaku kraja niza na kraj

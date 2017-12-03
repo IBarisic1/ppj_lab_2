@@ -46,10 +46,10 @@ public class GSA {
 		try (ObjectOutputStream outNovoStanje = new ObjectOutputStream(new FileOutputStream(NOVO_STANJE_PATH));
 				ObjectOutputStream outAkcija = new ObjectOutputStream(new FileOutputStream(AKCIJA_PATH))) {
 			outNovoStanje.writeObject(n);
-			System.err.printf("Serialized data is saved in " + NOVO_STANJE_PATH);
+			System.err.println("Serialized data is saved in " + NOVO_STANJE_PATH);
 
 			outAkcija.writeObject(a);
-			System.err.printf("Serialized data is saved in " + AKCIJA_PATH);
+			System.err.println("Serialized data is saved in " + AKCIJA_PATH);
 
 		} catch (IOException i) {
 			i.printStackTrace();

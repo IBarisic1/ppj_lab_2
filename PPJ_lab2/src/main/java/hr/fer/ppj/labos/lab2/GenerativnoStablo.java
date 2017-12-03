@@ -30,6 +30,7 @@ public class GenerativnoStablo {
 		this.tablicaNovoStanje = tablicaNovoStanje.getTablica();
 		this.produkcije = tablicaAkcija.getProdukcije();
 		this.uniformniZnakoviUlaznogNiza = uniformniZnakoviUlaznogNiza;
+		izgradiStablo();
 	}
 
 	public void pomakni(String uniformniZnak, int stanje, int brojRetka, String leksickaJedinka) {
@@ -41,7 +42,7 @@ public class GenerativnoStablo {
 		String lijeviZnakProdukcije = null;
 		List<String> desnaStranaProdukcije = null;
 		int stanjeNaVrhuStoga;
-		int sljedeceStanje;
+		Integer sljedeceStanje;
 		for (Map.Entry<String, Map<Integer, List<String>>> produkcija : produkcije.entrySet()) {
 			if (produkcija.getValue().containsKey(indeksProdukcije)) {
 				lijeviZnakProdukcije = produkcija.getKey();
@@ -81,7 +82,7 @@ public class GenerativnoStablo {
 	}
 
 	public void prihvati() {
-		this.reduciraj(1);
+//		this.reduciraj(1);
 		this.korijen = stog.pop();
 	}
 
@@ -115,7 +116,23 @@ public class GenerativnoStablo {
 			}
 		}
 	}
-
+	
+	//poziva se s korijenom stabla i pomakom od 0
+	public void ispisiStablo(Cvor korijen, int pomak){
+		if(!korijen.getUniformniZnak().equals("<%>")){
+			for(int i = 0; i < pomak; i++){
+				System.out.print(" ");
+			}
+			System.out.println(korijen);
+		}
+		for (Cvor dijete : korijen.getDjeca()) {
+			this.ispisiStablo(dijete, pomak + 1);
+		}
+	}
+	
+	public Cvor getKorijen(){
+		return korijen;
+	}
 	static class Cvor {
 
 		private int stanje;
@@ -135,6 +152,7 @@ public class GenerativnoStablo {
 			this.brojRetka = brojRetka;
 			this.leksickaJedinka = leksickaJedinka;
 			this.ispisatiSamoUniformniZnak = ispisatiSamoUniformniZnak;
+			djeca = new LinkedList<>();
 		}
 
 		public Cvor(int stanje, String uniformniZnak, boolean jeNezavrsniZnak) {
@@ -142,8 +160,6 @@ public class GenerativnoStablo {
 		}
 
 		public void dodajDijete(Cvor dijete) {
-			if (djeca == null)
-				djeca = new LinkedList<>();
 			djeca.add(dijete);
 		}
 
