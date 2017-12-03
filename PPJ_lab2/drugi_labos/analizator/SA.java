@@ -1,4 +1,3 @@
-package hr.fer.ppj.labos.lab2;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;

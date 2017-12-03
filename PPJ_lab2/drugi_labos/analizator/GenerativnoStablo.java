@@ -1,4 +1,3 @@
-package hr.fer.ppj.labos.lab2;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -6,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import hr.fer.ppj.labos.lab2.Akcija.Par;
-import hr.fer.ppj.labos.lab2.ParserTabliceUniformnihZnakova.ZapisTabliceUniformnihZnakova;
 
 public class GenerativnoStablo {
 	private Stack<Cvor> stog;
