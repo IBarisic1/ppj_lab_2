@@ -146,7 +146,11 @@ public class GenerativnoStablo {
 				while (tablicaAkcija[stanjeNaVrhuStoga][indeksSinkronizacijskogZnaka]
 						.getAkcija() == AkcijaParsera.ODBACI) {
 					stog.pop();
-					stanjeNaVrhuStoga = stog.peek().getStanje();
+					if (stog.isEmpty()) {
+						stanjeNaVrhuStoga = 0;
+					} else {
+						stanjeNaVrhuStoga = stog.peek().getStanje();
+					}
 				}
 
 				// kazaljka ulaznog niza pokazuje na sinkronizacijski znak, a
