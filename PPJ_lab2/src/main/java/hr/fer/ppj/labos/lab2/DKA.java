@@ -43,7 +43,7 @@ public class DKA implements Serializable {
 				if(prijelaz != null){
 					if(mapaPrijelaza.get(prijelaz.getZnakKojiPokrecePrijelaz()) == null)
 						mapaPrijelaza.put(prijelaz.getZnakKojiPokrecePrijelaz(), 
-								new ArrayList<>());
+								new ArrayList<LR1Stavka>());
 					mapaPrijelaza.get(prijelaz.getZnakKojiPokrecePrijelaz()).
 					add(prijelaz.getSljedecaStavka());
 				}
